@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9급 공무원 직렬 정보</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #1f2937;
+      background:
+        linear-gradient(rgba(10, 20, 40, 0.45), rgba(10, 20, 40, 0.45)),
+        url('https://cdn.pixabay.com/photo/2021/03/22/06/55/students-6113251_1280.jpg') center/cover fixed no-repeat;
+    }
+    .page {
+      min-height: 100vh;
+      padding: 28px 18px 40px;
+    }
+    .logo-wrap { text-align: center; margin-bottom: 18px; }
+    .logo-wrap img { height: 56px; filter: drop-shadow(1px 2px 3px rgba(0,0,0,.35)); }
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(6px);
+      border-radius: 24px;
+      border-top: 6px solid #FFBF00;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+      overflow: hidden;
+    }
+    .hero {
+      padding: 34px 28px 18px;
+      background: linear-gradient(135deg, #FFBF00 0%, #ffd24d 100%);
+      color: #111111;
+      text-align: center;
+    }
+    .hero h1 { margin: 0; font-size: 34px; font-weight: 800; color:#111111; }
+    .hero p { margin: 10px 0 0; font-size: 15px; opacity: 0.95; color:#3a2a00; }
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px 18px 0;
+      background: #fffef8;
+    }
+    .nav-tabs button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      background: #fff8e1;
+      color: #111111;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .nav-tabs button.active,
+    .nav-tabs button:hover {
+      background: #FFBF00;
+      color: #111111;
+      transform: translateY(-1px);
+    }
+    .section { display: none; padding: 28px; }
+    .section.active { display: block; }
+    .panel {
+      background: #fff;
+      border: 1px solid #edf0f5;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+    }
+    .question { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid #f1f5f9; }
+    .question:last-of-type { border-bottom: none; }
+    .question strong { display: block; margin-bottom: 10px; line-height: 1.5; }
+    .question label { display: block; margin: 8px 0 0 6px; line-height: 1.6; }
+    .primary-btn, .result a, .subject-link, .psat-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .primary-btn { background: #FFBF00; color: #111111; box-shadow: 0 8px 18px rgba(255,191,0,.22); }
+    .primary-btn:hover { background: #e5ac00; }
+    .section-title { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #111827; }
+    .section-desc { margin: 0 0 20px; color: #64748b; line-height: 1.7; }
+    .result { display:none; margin-top: 28px; padding: 22px; background: #fff9e6; border-radius: 16px; border: 1px solid #ffd86a; }
+    .result h2 { margin-top: 0; color: #8a6500; }
+    .result ul { padding-left: 20px; }
+    .top-actions { display:flex; flex-wrap:wrap; gap:10px; margin-bottom: 20px; }
+    #search {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #dbe2ea;
+      border-radius: 14px;
+      font-size: 15px;
+      margin: 0 0 22px;
+      outline: none;
+    }
+    #search:focus { border-color: #FFBF00; box-shadow: 0 0 0 4px rgba(255,191,0,.18); }
+    .grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid #edf2f7;
+      box-shadow: 0 8px 22px rgba(15,23,42,.05);
+    }
+    .card h3 { margin: 0 0 12px; font-size: 22px; color: #111111; }
+    .card ul { list-style: none; margin: 0; padding: 0; display:grid; gap: 10px; }
+    .subject-link { width: 100%; justify-content: flex-start; background: #f8fafc; color:#1f2937; border: 1px solid #e5e7eb; }
+    .subject-link:hover { background: #fff4cc; border-color: #FFBF00; }
+    .psat-grid { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+    .psat-btn { min-height: 92px; background: linear-gradient(135deg, #FFBF00, #ffd24d); color: #111111; box-shadow: 0 10px 20px rgba(255,191,0,.22); }
+    .psat-btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+    .psat-btn span { display:block; font-size: 18px; }
+    .mini-note { margin-top: 18px; font-size: 14px; color: #6b7280; line-height: 1.7; }
+    @media (max-width: 900px) {
+      .grid, .psat-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .page { padding: 16px 10px 28px; }
+      .hero h1 { font-size: 26px; }
+      .section { padding: 18px; }
+      .panel { padding: 18px; }
+      .nav-tabs { gap: 8px; }
+      .nav-tabs button { width: calc(50% - 4px); padding: 11px 14px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="logo-wrap">
+      <img src="https://img.eduwill.net/Img2/Common/BI/type2/live/Logo.svg" alt="에듀윌 로고" />
+    </div>
+
+    <div class="shell">
+      <div class="hero">
+        <h1>9급 공무원 직렬 정보</h1>
+        <p>직렬 추천 · 전공과목 검색 · PSAT 기출문제까지 한 번에 확인하세요.</p>
+      </div>
+
+      <div class="nav-tabs">
+        <button id="tab-btn-recommend" class="active" onclick="showTab('recommend')">직렬 추천</button>
+        <button id="tab-btn-subject" onclick="showTab('subject')">과목 검색</button>
+        <button id="tab-btn-psat" onclick="showTab('psat')">PSAT 기출문제</button>
+        <button onclick="goToStatsPage()">경쟁률·응시율·합격선</button>
+      </div>
+
+      <section id="recommend-tab" class="section active">
+        <div class="panel">
+          <h2 class="section-title">직렬 추천 체크리스트</h2>
+          <p class="section-desc">간단한 문항에 답하면 성향과 전공에 맞는 직렬을 추천해드립니다.</p>
+          <form id="quizForm">
+            <div class="question">
+              <strong>1. 사람과 대면하는 업무를 선호하나요?</strong>
+              <label><input name="q1" required type="radio" value="admin,social,police" /> 예</label>
+              <label><input name="q1" type="radio" value="it,stat" /> 아니오</label>
+            </div>
+            <div class="question">
+              <strong>2. 반복 업무보다 분석/자료 기반 업무가 더 맞다고 느끼시나요?</strong>
+              <label><input name="q2" type="radio" value="stat,it" /> 예</label>
+              <label><input name="q2" type="radio" value="admin" /> 아니오</label>
+            </div>
+            <div class="question">
+              <strong>3. 자격증 또는 전공이 있나요? (중복 선택 가능)</strong>
+              <label><input name="q3" type="checkbox" value="social" /> 사회복지학/사회복지사</label>
+              <label><input name="q3" type="checkbox" value="nurse" /> 간호학/간호사</label>
+              <label><input name="q3" type="checkbox" value="it" /> 컴퓨터공학/정보처리기사</label>
+              <label><input name="q3" type="checkbox" value="tech" /> 건축/토목/기계 등 기사자격증</label>
+              <label><input name="q3" type="checkbox" value="stat" /> 통계학/계량경제학</label>
+              <label><input name="q3" type="checkbox" value="police" /> 경찰학/형법/형사소송법</label>
+              <label><input name="q3" type="checkbox" value="admin" /> 행정학/정치외교학/법학</label>
+              <label><input name="q3" type="checkbox" value="semoo" /> 회계학/세무학/CPA/CTA</label>
+            </div>
+            <div class="question">
+              <strong>4. 교대근무(야간 포함)가 가능한가요?</strong>
+              <label><input name="q4" type="radio" value="correction,immigration,police" /> 예</label>
+              <label><input name="q4" type="radio" value="" /> 아니오</label>
+            </div>
+            <div class="question">
+              <strong>5. 실내 업무보다 현장 업무가 더 어울린다고 느끼시나요?</strong>
+              <label><input name="q5" type="radio" value="tech,correction" /> 예</label>
+              <label><input name="q5" type="radio" value="admin,it" /> 아니오</label>
+            </div>
+            <div class="question">
+              <strong>6. 숫자 계산이나 통계 자료 다루는 데 자신이 있나요?</strong>
+              <label><input name="q6" type="radio" value="stat,semoo" /> 예</label>
+              <label><input name="q6" type="radio" value="" /> 아니오</label>
+            </div>
+            <button class="primary-btn" type="submit">직렬 추천 받기</button>
+          </form>
+          <div class="result" id="resultBox">
+            <h2>추천 직렬</h2>
+            <ul id="recommendList"></ul>
+            <div id="reasonBox"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="subject-tab" class="section">
+        <div class="panel">
+          <h2 class="section-title">직렬별 전공과목 자료 링크</h2>
+          <p class="section-desc">직렬명 또는 과목명을 검색해 필요한 기출 자료를 빠르게 찾아보세요.</p>
+          <input id="search" type="text" placeholder="직렬 또는 과목명을 입력하세요..." />
+          <div id="subject-links" class="grid"></div>
+        </div>
+      </section>
+
+      <section id="psat-tab" class="section">
+        <div class="panel">
+          <h2 class="section-title">PSAT 기출문제</h2>
+          <p class="section-desc">과목별 기출문제를 버튼형으로 바로 확인할 수 있도록 구성했습니다.</p>
+          <div class="psat-grid">
+            <a class="psat-btn" href="https://drive.google.com/file/d/1rj1WpG0A0OigajUsSHmloxGdqXVhsaSj/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span>언어논리</span></a>
+            <a class="psat-btn" href="https://drive.google.com/file/d/1ALdJSC5HC04SMrvkQPQiYXfPMJchCV2L/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span>자료해석</span></a>
+            <a class="psat-btn" href="https://drive.google.com/file/d/1gRMnFmaw1ZEibmWawScC40i0GMVgb-Tm/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span>상황판단</span></a>
+          </div>
+          <p class="mini-note">각 버튼을 클릭하면 연결된 구글드라이브 기출문제 파일이 새 창에서 열립니다.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const scoreMap = {};
+      const answerLog = [];
+
+      ["q1", "q2", "q4", "q5", "q6"].forEach(q => {
+        const values = (form.get(q) || "").split(',');
+        values.forEach(v => {
+          if (v) {
+            scoreMap[v] = (scoreMap[v] || 0) + 1;
+            answerLog.push(`• ${q.toUpperCase()}: ${v}`);
+          }
+        });
+      });
+
+      (form.getAll("q3") || []).forEach(v => {
+        if (v) {
+          scoreMap[v] = (scoreMap[v] || 0) + 2;
+          answerLog.push(`• Q3: ${v} 자격증/전공 보유`);
+        }
+      });
+
+      const 직렬이름 = {
+        admin: "일반행정직",
+        social: "사회복지직",
+        nurse: "간호직/보건직",
+        it: "전산직",
+        tech: "시설/기술직",
+        stat: "통계직",
+        correction: "교정직",
+        immigration: "출입국관리직",
+        semoo: "세무직",
+        police: "경찰직"
+      };
+
+      const 합격선 = {
+        admin: "93점 (2025 국가직)",
+        social: "86점 (2024 경기도)",
+        nurse: "91점 (2024 경기도)",
+        it: "93점 (2025 국가직)",
+        tech: "83점 (2024 경기도)",
+        stat: "85점 (2025 국가직)",
+        correction: "80점 (2025 국가직)",
+        immigration: "86점 (2025 국가직)",
+        semoo: "80점 (2025 국가직)",
+        police: "87점 (2025 국가직)"
+      };
+
+      const sorted = Object.entries(scoreMap).sort((a, b) => b[1] - a[1]).slice(0, 3);
+      const list = document.getElementById("recommendList");
+      const reasonBox = document.getElementById("reasonBox");
+      list.innerHTML = "";
+
+      sorted.forEach(([key, score]) => {
+        const li = document.createElement("li");
+        const label = 직렬이름[key] || key;
+        const cutoff = 합격선[key] ? ` / 최근 합격선: ${합격선[key]}` : "";
+        li.textContent = `${label} (적합도: ${score})${cutoff}`;
+        list.appendChild(li);
+      });
+
+      reasonBox.innerHTML = `<strong>선택 요약:</strong><br>${answerLog.join("<br>")}`;
+      document.getElementById("resultBox").style.display = "block";
+    });
+
+    function goToStatsPage() {
+      window.open('https://govlab.eduwill.net/schedule/pds', '_blank');
+    }
+
+    const data = `직렬명	과목	드라이브링크\n건축	건축계획	https://drive.google.com/file/d/1ek5QsfZCslMv3fJl3oqfLMrTxgwDVkQ_/view?usp=drive_link\n건축	건축구조	https://drive.google.com/file/d/1Y0oQKDILGbO5yb9ulvv1dDEfLdqFuJhJ/view?usp=drive_link\n검찰	형법	https://drive.google.com/file/d/1Y0oQKDILGbO5yb9ulvv1dDEfLdqFuJhJ/view?usp=drive_link\n검찰	형사소송법	https://drive.google.com/file/d/13tuD1stLGzB1FTi69DaF8pixbCrZTX2r/view?usp=drive_link\n고용노동	노동법개론	https://drive.google.com/file/d/1aWLDIVxcb63r-n3ChDfnggExc1SPQdGR/view?usp=drive_link\n고용노동	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n공통과목	국어	https://drive.google.com/file/d/1QBDvCNusp7FZqsZDOwFS2_rRtL_c5kQh/view?usp=drive_link\n공통과목	영어	https://drive.google.com/file/d/1W_qMNgHswT85mfLAxKTZmKak7jNVZu5X/view?usp=drive_link\n공통과목	한국사	https://drive.google.com/file/d/1DsU7rm9laQluDznDDtQCFe1EbTFnOgnY/view?usp=drive_link\n관세	관세법개론	https://drive.google.com/file/d/1cLSfF7RDa_Frhhl6ouuKC2uv2zRvsmTF/view?usp=drive_link\n관세	회계원리	https://drive.google.com/file/d/1A-FKWqgKOve85cIEmFmR8nYQijRbYd84/view?usp=drive_link\n교육행정	교육학개론	https://drive.google.com/file/d/102vf6higiJX9-XwuOy8eCad-k28CFCOo/view?usp=drive_link\n교육행정	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n교정	교정학개론	https://drive.google.com/file/d/1oOzm0tJ8RxMdS4I6OaoS5miOC0JGIbhn/view?usp=drive_link\n교정	형사소송법개론	https://drive.google.com/file/d/1EfC5DXoZUQl6-Z9fPBj_8mFwSZJXxij1/view?usp=drive_link\n데이터	데이터베이스론	https://drive.google.com/file/d/1iH4sLI3_Ynl6qocpnO8cZMRvGQExZs8X/view?usp=drive_link\n데이터	알고리즘	https://drive.google.com/file/d/1iAut2pPs2tcn1foE1xW8BJlkaGNZ8yId/view?usp=drive_link\n방재안전	안전관리론	https://drive.google.com/file/d/10BrijpnRZIF_D8IMfP07G37hdm9qRGTc/view?usp=drive_link\n방재안전	재난관리론	https://drive.google.com/file/d/17hDPybVZPi2n3ihQNgXxvCVDd_uJ9qU1/view?usp=drive_link\n보호	사회복지학개론	https://drive.google.com/file/d/1OZLk8SF2rg7fdeGaOXnAErpwqi0x9Ma-/view?usp=drive_link\n보호	형사정책개론	https://drive.google.com/file/d/1r4OIIKZCW0NKK_4c7avEqZU9trXCk9wQ/view?usp=drive_link\n사회복지직	사회복지학개론	https://drive.google.com/file/d/1OZLk8SF2rg7fdeGaOXnAErpwqi0x9Ma-/view?usp=drive_link\n사회복지직	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n산림자원	임업경영	https://drive.google.com/file/d/1bQpXxYxlHwRoi1xXIp8AdiAfTcfqsAvj/view?usp=drive_link\n산림자원	조림	https://drive.google.com/file/d/1kAUzmbvaIxh_whYUJ-wFvzy3a7vv60UL/view?usp=drive_link\n선거행정	공직선거법	https://drive.google.com/file/d/17HgVEIDjYu6Tk-pKi_bKdssARrE9eWHf/view?usp=drive_link\n선거행정 	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n세무	세법개론	https://drive.google.com/file/d/1d0kaRAvKHTAIhzdISnm0M5Dh86JKrRIR/view?usp=drive_link\n세무	회계학	https://drive.google.com/file/d/1LsG8zyY_IHJiwfTY1dbtr70Xs_0JQq4F/view?usp=drive_link\n시설조경	조경계획 및 설계	https://drive.google.com/file/d/1W_DhLy-JCtlwRrlYpPoaYGji2Jh2zXa1/view?usp=drive_link\n시설조경	조경학	https://drive.google.com/file/d/1vy8mhE9rHTJWw4SVYVmiHMVjqkeLAKS5/view?usp=drive_link\n일반기계	기계설계	https://drive.google.com/file/d/1ragoedEgJYg-DfenELm8H-Ke0ip2AvYT/view?usp=drive_link\n일반기계	기계일반	https://drive.google.com/file/d/1wYd9isD9ZQVSeuQ-2inj1XECtbsvpSb_/view?usp=drive_link\n일반농업	식용작물	https://drive.google.com/file/d/18-MSiBeE25UI_slEwIjir9RwWchzf9AK/view?usp=drive_link\n일반농업	재배학개론	https://drive.google.com/file/d/1i5yul8KOUsCSC3D9m5V5TojJQb-lcGFr/view?usp=drive_link\n일반토목	응용역학개론	https://drive.google.com/file/d/10qQL_cVgl1VkJz6nBZ62B9dnOXhIGCSE/view?usp=drive_link\n일반토목	토목설계	https://drive.google.com/file/d/1y9-XQk4HMWuibqAoVeRkOeLkQBKi5tm1/view?usp=drive_link\n일반행정	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n일반행정	행정학개론	https://drive.google.com/file/d/1WU6OL6nvftA2UG3huQ7z78jy6Yo0nqfR/view?usp=drive_link\n일반환경	화학	https://drive.google.com/file/d/1g7fVWPlfsQY18KkFYUS6yJRVf1hD5bAd/view?usp=drive_link\n일반환경	환경공학개론	https://drive.google.com/file/d/1f7FVNguyEN2BCigRl7BdJkK3EEo_znPS/view?usp=drive_link\n전기	전기기기	https://drive.google.com/file/d/1ri8oPu0R2QOyMNSE6d0bPX6Kob2OEJ5X/view?usp=drive_link\n전기	전기이론	https://drive.google.com/file/d/11DZ61TfastFAEQxciho5zp0XK-yZlEQr/view?usp=drive_link\n전산개발	정보보호론	https://drive.google.com/file/d/1SeWez6yvLls0UytkeNxvqBwgVgDVDIFP/view?usp=drive_link\n전산개발	컴퓨터일반	https://drive.google.com/file/d/1evjyWwYUDItSb8XrgzsPeEkIa_cgd2vu/view?usp=drive_link\n전송기술	무선공학개론	https://drive.google.com/file/d/1bIdxbBq-az-o-oMxv0nCu3PK_w4H2leo/view?usp=drive_link\n전송기술	전자공학개론	https://drive.google.com/file/d/1mymhyKpSxrnf0mJVqMhq24FXhyopuCtl/view?usp=drive_link\n정보보호	네트워크 보안 	https://drive.google.com/file/d/1TnOA5K6Sdqa7C-8gLICxOgTo7NRxLA66/view?usp=drive_link\n정보보호	정보시스템 보안	https://drive.google.com/file/d/1wfMmzxb3vgG45q8BxTEylLX6Ae9olLt8/view?usp=drive_link\n직업상담	노동법개론	https://drive.google.com/file/d/1z7aCug931UgAXxD6vOmkC7bjhvT8ThPS/view?usp=drive_link\n직업상담	직업상담 심리학개론	https://drive.google.com/file/d/14vDWPXMblKTRQpUWCc93Xkll1MpKqEcA/view?usp=drive_link\n철도경찰	형법총론	https://drive.google.com/file/d/1ECzeALL1zGj37WltqgQG7aCvmG9n8BOa/view?usp=drive_link\n철도경찰	형사소송법개론	https://drive.google.com/file/d/1Cy7_srpwoY2GhSDk1N_wXX3nT_p9T5Yz/view?usp=drive_link\n출입국관리	국제법개론	https://drive.google.com/file/d/1UyTyU0xtGhdENq-Nmu44EmqhDp7haZRD/view?usp=drive_link\n출입국관리	행정법총론	https://drive.google.com/file/d/1aP5kfmSJEDkAvnL7kWrt7plQuVQ5_uQO/view?usp=drive_link\n통계	경제학개론	https://drive.google.com/file/d/13mESpR-d0aXfn7ZQ6cO9MQ-6VeffIP_-/view?usp=drive_link\n통계	통계학개론	https://drive.google.com/file/d/1G4HkWJa4tTUvZrizj5o_w8nTkr60Zhxi/view?usp=drive_link\n화공	공업화확	https://drive.google.com/file/d/1mJgJcpVWjgUnsqqSPn3XLpezdztBe5MT/view?usp=drive_link\n화공	화학공학일반	https://drive.google.com/file/d/14PB9032Nh12i85fNfiT7gSa-gQklSi2I/view?usp=sharing`;
+    const lines = data.trim().split('\n').slice(1);
+    const 직렬별 = {};
+    lines.forEach(line => {
+      const [직렬, 과목, 링크] = line.split('	');
+      if (!직렬별[직렬]) 직렬별[직렬] = [];
+      직렬별[직렬].push({ 과목, 링크 });
+    });
+
+    const container = document.getElementById('subject-links');
+    function renderList(filter = '') {
+      container.innerHTML = '';
+      Object.keys(직렬별).forEach(직렬 => {
+        const filtered = 직렬별[직렬].filter(({ 과목 }) => 직렬.includes(filter) || 과목.includes(filter));
+        if (filtered.length > 0 || filter === '') {
+          const card = document.createElement('div');
+          card.className = 'card';
+          const h3 = document.createElement('h3');
+          h3.textContent = 직렬.trim();
+          card.appendChild(h3);
+          const ul = document.createElement('ul');
+          filtered.forEach(({ 과목, 링크 }) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = 링크;
+            a.textContent = 과목.trim();
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'subject-link';
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+          container.appendChild(card);
+        }
+      });
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => renderList(e.target.value.trim()));
+    renderList();
+
+    function showTab(tab) {
+      const tabMap = { recommend: 'recommend-tab', subject: 'subject-tab', psat: 'psat-tab' };
+      Object.values(tabMap).forEach(id => document.getElementById(id).classList.remove('active'));
+      Object.keys(tabMap).forEach(key => {
+        const btn = document.getElementById(`tab-btn-${key}`);
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById(tabMap[tab]).classList.add('active');
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
